@@ -1,0 +1,27 @@
+﻿@model CategoryEditModel
+@{
+	ViewData["Title"] = "Редагувати";
+}
+<div class="container">
+	<h1 class="text-center">Редагувати категорію</h1>
+	<form asp-action="Edit" enctype="multipart/form-data" class="col-md-6 offset-md-3">
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="CurrentImage" />
+		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		<div class="mb-3">
+			<label asp-for="Name" class="form-label">Назва</label>
+			<input asp-for="Name" class="form-control">
+			<span asp-validation-for="Name" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label>Поточне фото</label>
+			<img src="/Image/@Model.CurrentImage" width="200" class="d-block rounded" />
+		</div>
+		<div class="mb-3">
+			<label asp-for="NewImage" class="form-label">Фото</label>
+			<input asp-for="NewImage" class="form-control">
+			<span asp-validation-for="NewImage" class="text-danger"></span>
+		</div>
+		<button type="submit" class="btn btn-primary">Зберегти</button>
+		<a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+	</form>

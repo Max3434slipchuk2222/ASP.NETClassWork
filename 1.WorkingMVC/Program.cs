@@ -1,7 +1,10 @@
 using _1.WorkingMVC.Data;
 using _1.WorkingMVC.Data.Entities;
+using _1.WorkingMVC.Interfaces;
+using _1.WorkingMVC.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +14,9 @@ builder.Services.AddDbContext<MyAppDbContext>(opt =>
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<IImageService, ImageService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
