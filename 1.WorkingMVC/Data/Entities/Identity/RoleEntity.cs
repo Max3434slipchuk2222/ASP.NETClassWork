@@ -2,6 +2,7 @@
 
 namespace _1.WorkingMVC.Data.Entities.Identity;
 
+// Клас описує роль користувача
 public class RoleEntity : IdentityRole<int>
 {
 	public RoleEntity() { }

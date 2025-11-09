@@ -31,6 +31,7 @@ public class AccountController(
 			? await imageService.UploadImageAsync(model.Image) : null;
 
 		user.Image = imageStr;
+		//Створення користувача
 		var result = await userManager.CreateAsync(user, model.Password);
 
 		if (result.Succeeded)

@@ -2,6 +2,8 @@
 
 namespace _1.WorkingMVC.Models.Account;
 
+
+// Модель для реєстрації користувача
 public class RegisterViewModel
 {
 	[Display(Name = "Прізвище")]

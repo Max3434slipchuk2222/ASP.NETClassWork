@@ -17,8 +17,9 @@ public class MyAppDbContext : IdentityDbContext<UserEntity, RoleEntity,
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		base.OnModelCreating(builder);
+		base.OnModelCreating(builder); // Виклик базового методу для налаштування Identity
 
+		// Налаштування зв'язку багато-до-багатьох між UserEntity та RoleEntity через UserRoleEntity
 		builder.Entity<UserRoleEntity>()
 			.HasOne(ur => ur.User)
 			.WithMany(u => u.UserRoles)

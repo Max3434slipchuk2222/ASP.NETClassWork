@@ -2,6 +2,7 @@
 
 namespace _1.WorkingMVC.Data.Entities.Identity;
 
+// Клас описує користувача
 public class UserEntity : IdentityUser<int>
 {
 	public string? FirstName { get; set; } = null;

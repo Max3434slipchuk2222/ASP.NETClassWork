@@ -14,8 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<MyAppDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Використовуємо Identity з нашими класами UserEntity та RoleEntity
 builder.Services.AddIdentity<UserEntity, RoleEntity>(options =>
 {
+	//Встановлюємо правила для паролів
 	options.Password.RequireDigit = false;
 	options.Password.RequireNonAlphanumeric = false;
 	options.Password.RequireLowercase = false;
@@ -23,8 +25,9 @@ builder.Services.AddIdentity<UserEntity, RoleEntity>(options =>
 	options.Password.RequiredLength = 6;
 	options.Password.RequiredUniqueChars = 1;
 })
+	//Налаштовуємо збереження користувачів та ролей у базі даних
 	.AddEntityFrameworkStores<MyAppDbContext>()
-	.AddDefaultTokenProviders();
+	.AddDefaultTokenProviders(); // Додавання сервісу для генерації токенів
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -44,7 +47,9 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAuthentication(); // Встановлює хто є поточним користувачем
+
+app.UseAuthorization(); // Встановлює чи має користувач доступ до сторінки
 
 app.MapStaticAssets();
 
@@ -64,6 +69,7 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(path),
     RequestPath = $"/{dirImageName}"
 });
+// Ініціалізація бази даних та додавання ролей при початковому запуску
 using (var scoped = app.Services.CreateScope())
 {
     var MyAppDbContext = scoped.ServiceProvider.GetRequiredService<MyAppDbContext>();
