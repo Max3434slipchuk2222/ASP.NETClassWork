@@ -3,10 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <title>ภาม</title>
+    <link href="/css/site.css" rel="stylesheet" />
     <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container mt-4">
+		@await Html.PartialAsync("_Header")
         @RenderBody()
     </div>
 
