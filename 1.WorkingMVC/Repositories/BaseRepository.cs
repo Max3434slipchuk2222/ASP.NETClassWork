@@ -1,9 +1,6 @@
 ﻿using _1.WorkingMVC.Interfaces;
 using Microsoft.EntityFrameworkCore;
-
 namespace _1.WorkingMVC.Repositories;
-
-// Ensure TEntity implements IEntity<TKey> to satisfy the constraint in IGenericRepository
 public abstract class BaseRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>
 {
 	protected readonly DbContext _dbContext;
@@ -42,12 +39,13 @@ public abstract class BaseRepository<TEntity, TKey> : IGenericRepository<TEntity
 		return Task.CompletedTask;
 	}
 
-	public Task<IQueryable<TEntity>> GetAllQurableAsync()
-	{
-		throw new NotImplementedException();
-	}
 	public Task<int> SaveChangesAsync()
 	{
 		return _dbContext.SaveChangesAsync();
+	}
+
+	public Task<IQueryable<TEntity>> GetAllQurableAsync()
+	{
+		throw new NotImplementedException();
 	}
 }

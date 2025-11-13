@@ -1,11 +1,9 @@
 ﻿using _1.WorkingMVC.Data;
-using _1.WorkingMVC.Data.Entities;
 using _1.WorkingMVC.Interfaces;
 using _1.WorkingMVC.Models.Category;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace _1.WorkingMVC.Controllers;
 

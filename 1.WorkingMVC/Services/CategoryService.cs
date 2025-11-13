@@ -1,9 +1,7 @@
 ﻿using _1.WorkingMVC.Data.Entities;
 using _1.WorkingMVC.Interfaces;
 using _1.WorkingMVC.Models.Category;
-using _1.WorkingMVC.Repositories;
 using AutoMapper;
-
 namespace _1.WorkingMVC.Services
 {
 	public class CategoryService(ICategoryRepository categoryRepository, IImageService imageService, IMapper mapper) : ICategoryService
@@ -11,25 +9,28 @@ namespace _1.WorkingMVC.Services
 		public async Task<List<CategoryItemModel>> GetAllAsync()
 		{
 			var listTest = await categoryRepository.GetAllAsync();
-			var model = mapper.Map<List<CategoryItemModel>>(listTest);
-			return model;
+			return mapper.Map<List<CategoryItemModel>>(listTest);
 		}
-		public async Task<CategoryEditModel?> GetEditAsync(int id)
+
+		public async Task<CategoryEditModel?> GetForEditAsync(int id)
 		{
 			var entity = await categoryRepository.GetByIdAsync(id);
-			if (entity == null)
-			{
-				return null;
-			}
-			return mapper.Map<CategoryEditModel>(entity);
+			return entity == null ? null : mapper.Map<CategoryEditModel>(entity);
 		}
+
+		// Fix for CS0535: Implementing the missing method 'GetEditAsync' from ICategoryService
+		public async Task<CategoryEditModel?> GetEditAsync(int id)
+		{
+			return await GetForEditAsync(id);
+		}
+
 		public async Task CreateAsync(CategoryCreateModel model)
 		{
 			var name = model.Name.Trim();
-			var uniqueName = await categoryRepository.FindByNameAsync(name);
-			if (uniqueName != null)
+			var existing = await categoryRepository.FindByNameAsync(name);
+			if (existing != null)
 			{
-				throw new InvalidOperationException($"Категорія з  такою назвою вже існує.");
+				throw new InvalidOperationException($"Категорія з назвою '{name}' вже існує.");
 			}
 
 			var entity = mapper.Map<CategoryEntity>(model);
@@ -37,25 +38,27 @@ namespace _1.WorkingMVC.Services
 			{
 				entity.Image = await imageService.UploadImageAsync(model.Image);
 			}
+
 			await categoryRepository.AddAsync(entity);
 			await categoryRepository.SaveChangesAsync();
 		}
+
 		public async Task UpdateAsync(CategoryEditModel model)
 		{
 			var name = model.Name.Trim();
-
-			var uniqueName = await categoryRepository.FindByNameAsync(name, model.Id);
-			if (uniqueName != null)
+			var repeat = await categoryRepository.FindByNameAsync(name, model.Id);
+			if (repeat != null)
 			{
-				throw new InvalidOperationException($"Категорія з такою назвою  вже існує.");
+				throw new InvalidOperationException($"Категорія з назвою '{name}' вже існує.");
 			}
+
 			var entity = await categoryRepository.GetByIdAsync(model.Id);
 			if (entity == null)
 			{
 				throw new KeyNotFoundException("Категорію не знайдено.");
 			}
-			entity.Name = name;
 
+			entity.Name = name;
 			if (model.NewImage != null)
 			{
 				entity.Image = await imageService.UploadImageAsync(model.NewImage);
@@ -64,6 +67,7 @@ namespace _1.WorkingMVC.Services
 			await categoryRepository.UpdateAsync(entity);
 			await categoryRepository.SaveChangesAsync();
 		}
+
 		public async Task DeleteAsync(int id)
 		{
 			var entity = await categoryRepository.GetByIdAsync(id);
@@ -73,8 +77,7 @@ namespace _1.WorkingMVC.Services
 			}
 
 			entity.IsDeleted = true;
-			await categoryRepository.UpdateAsync(entity); 
-
+			await categoryRepository.UpdateAsync(entity);
 			await categoryRepository.SaveChangesAsync();
 		}
 	}

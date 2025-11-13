@@ -1,4 +1,5 @@
 ﻿using _1.WorkingMVC.Interfaces;
+using Microsoft.Extensions.Configuration;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.Processing;
@@ -31,6 +32,7 @@ public class ImageService : IImageService
 			var dirImageName = configuration["DirImageName"] ?? "Image";
 			var path = Path.Combine(Directory.GetCurrentDirectory(), dirImageName, fileName);
 			await image.SaveAsync(path, new WebpEncoder());
+			
 			return fileName;
 		}
 		catch

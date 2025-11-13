@@ -33,6 +33,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddScoped<ICategoryRepository ,CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -42,12 +43,10 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
 }
 app.UseRouting();
 
-app.UseAuthentication(); // Встановлює хто є поточним користувачем
+app.UseAuthentication();
 
 app.UseAuthorization(); // Встановлює чи має користувач доступ до сторінки
 
@@ -75,7 +74,15 @@ using (var scoped = app.Services.CreateScope())
     var MyAppDbContext = scoped.ServiceProvider.GetRequiredService<MyAppDbContext>();
     var roleManager = scoped.ServiceProvider.GetRequiredService<RoleManager<RoleEntity>>();
     MyAppDbContext.Database.Migrate();
-    if (!MyAppDbContext.Categories.Any())
+	var userManager = scoped.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
+
+	var allUsers = userManager.Users.ToList();
+	Console.WriteLine($"Всього користувачів: {allUsers.Count}");
+    foreach (var user in allUsers)
+    {
+        Console.WriteLine($" Email: {user.Email}, UserName: {user.UserName}, EmailConfirmed: {user.EmailConfirmed}");
+    }
+	if (!MyAppDbContext.Categories.Any())
     {
         var categories = new List<CategoryEntity>{
             new CategoryEntity {
