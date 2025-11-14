@@ -4,6 +4,7 @@ using _1.WorkingMVC.Models.Account;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using _1.WorkingMVC.Constants;
 
 namespace _1.WorkingMVC.Controllers;
 
@@ -66,6 +67,7 @@ public class AccountController(
 
 		if (result.Succeeded)
 		{
+			result = await userManager.AddToRoleAsync(user, Roles.User);
 			await signInManager.SignInAsync(user, isPersistent: false);
 			return RedirectToAction("Index", "Main");
 		}

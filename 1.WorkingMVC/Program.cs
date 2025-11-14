@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using _1.WorkingMVC.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddScoped<ICategoryRepository ,CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IUserService, UserService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -102,8 +104,8 @@ using (var scoped = app.Services.CreateScope())
     if (!MyAppDbContext.Roles.Any())
     {
         string[] roles = { "Admin", "User" };
-        foreach (var roleName in roles)
-        {
+		foreach (var roleName in Roles.AllRoles)
+		{
             var role = new RoleEntity(roleName);
             var result = roleManager.CreateAsync(role).Result;
             if (result.Succeeded)
