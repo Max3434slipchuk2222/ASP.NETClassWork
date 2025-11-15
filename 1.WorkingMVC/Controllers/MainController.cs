@@ -17,76 +17,76 @@ public class MainController(MyAppDbContext myAppDbContext,
 		return View(model);
 	}
 
-	//Для того, щоб побачити сторінку створення категорії
-	[HttpGet] //Щоб побачити сторінку і внести інформацію про категорію
-	public IActionResult Create()
-	{
-		return View();
-	}
+	////Для того, щоб побачити сторінку створення категорії
+	//[HttpGet] //Щоб побачити сторінку і внести інформацію про категорію
+	//public IActionResult Create()
+	//{
+	//	return View();
+	//}
 
-	[HttpPost] //Збереження даних
-	public async Task<IActionResult> Create(CategoryCreateModel model)
-	{
-		if(!ModelState.IsValid)
-		{
-			return View(model);
-		}
+	//[HttpPost] //Збереження даних
+	//public async Task<IActionResult> Create(CategoryCreateModel model)
+	//{
+	//	if(!ModelState.IsValid)
+	//	{
+	//		return View(model);
+	//	}
 
-		try
-		{
-			await categoryService.CreateAsync(model);
-			return RedirectToAction(nameof(Index));
-		}
-		catch (InvalidOperationException ex) 
-		{
-			ModelState.AddModelError("Name", ex.Message);
-			return View(model);
-		}
-	}
-	[HttpGet]
-	public async Task<IActionResult> Edit(int id)
-	{
-		var model = await categoryService.GetEditAsync(id);
-		if (model == null)
-		{
-			return NotFound();
-		}
-		return View(model);
-	}
-	[HttpPost]
-	public async Task<IActionResult> Edit(CategoryEditModel model)
-	{
-		if (!ModelState.IsValid)
-		{
-			return View(model);
-		}
-		try
-		{
-			await categoryService.UpdateAsync(model);
-			return RedirectToAction(nameof(Index));
-		}
-		catch (InvalidOperationException ex)
-		{
-			ModelState.AddModelError("Name", ex.Message);
-			return View(model);
-		}
-		catch (KeyNotFoundException)
-		{
-			return NotFound();
-		}
-	}
-	[HttpPost]
-	public async Task<IActionResult> Delete(int id)
-	{
-		try
-		{
-			await categoryService.DeleteAsync(id);
-			return RedirectToAction(nameof(Index));
-		}
-		catch (KeyNotFoundException)
-		{
-			return NotFound();
-		}
-	}
+	//	try
+	//	{
+	//		await categoryService.CreateAsync(model);
+	//		return RedirectToAction(nameof(Index));
+	//	}
+	//	catch (InvalidOperationException ex) 
+	//	{
+	//		ModelState.AddModelError("Name", ex.Message);
+	//		return View(model);
+	//	}
+	//}
+	//[HttpGet]
+	//public async Task<IActionResult> Edit(int id)
+	//{
+	//	var model = await categoryService.GetEditAsync(id);
+	//	if (model == null)
+	//	{
+	//		return NotFound();
+	//	}
+	//	return View(model);
+	//}
+	//[HttpPost]
+	//public async Task<IActionResult> Edit(CategoryEditModel model)
+	//{
+	//	if (!ModelState.IsValid)
+	//	{
+	//		return View(model);
+	//	}
+	//	try
+	//	{
+	//		await categoryService.UpdateAsync(model);
+	//		return RedirectToAction(nameof(Index));
+	//	}
+	//	catch (InvalidOperationException ex)
+	//	{
+	//		ModelState.AddModelError("Name", ex.Message);
+	//		return View(model);
+	//	}
+	//	catch (KeyNotFoundException)
+	//	{
+	//		return NotFound();
+	//	}
+	//}
+	//[HttpPost]
+	//public async Task<IActionResult> Delete(int id)
+	//{
+	//	try
+	//	{
+	//		await categoryService.DeleteAsync(id);
+	//		return RedirectToAction(nameof(Index));
+	//	}
+	//	catch (KeyNotFoundException)
+	//	{
+	//		return NotFound();
+	//	}
+	//}
 
 }

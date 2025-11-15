@@ -1,0 +1,81 @@
+﻿@model List<CategoryItemModel>
+@{
+    //Layout = "_MainLayout"; //не використовувати обгортку Layout
+}
+
+<div class="container">
+    <h1 class="text-center">Категорії</h1>
+    <a asp-action="Create" class="btn btn-success">Додати категорію</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Фото</th>
+                <th scope="col">Назва</th>
+                <th scope="col" style="width: 200px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var category in Model)
+            {
+                <tr>
+                    <th scope="row">@category.Id</th>
+                    <td>
+                        <img src="/Image/@category.Image" width="100" height="75" class="rounded" />
+                    </td>
+                    <td>@category.Name</td>
+                    <td class="">
+                        <a asp-action="Edit" asp-route-id="@category.Id" class="btn btn-primary">Редагувати</a>
+                        <button type="button" class=" mt-2 btn btn-sm btn-danger btn-delete"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal"
+                                data-id="@category.Id"
+                                data-name="@category.Name">
+                            Видалити
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Підтвердження</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Ви впевнені, що хочете видалити категорію "<strong></strong>"?
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete" method="post" id="deleteForm">
+                    <input type="hidden" name="id" id="deleteCategoryId" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                    <button type="submit" class="btn btn-danger">Видалити</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var deleteModal = document.getElementById('deleteModal');
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                
+                var categoryId = button.getAttribute('data-id');
+                var categoryName = button.getAttribute('data-name');
+
+                var modalBodyName = deleteModal.querySelector('.modal-body strong');
+                var hiddenInput = deleteModal.querySelector('#deleteCategoryId');
+
+                modalBodyName.textContent = categoryName;
+                hiddenInput.value = categoryId;
+            });
+        });
+    </script>
+}

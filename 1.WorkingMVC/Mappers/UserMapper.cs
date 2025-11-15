@@ -1,6 +1,6 @@
 ﻿using _1.WorkingMVC.Data.Entities.Identity;
 using AutoMapper;
-using _1.WorkingMVC.Models.Users;
+using _1.WorkingMVC.Areas.Admin.Models.Users;
 
 namespace _1.WorkingMVC.Mappers;
 

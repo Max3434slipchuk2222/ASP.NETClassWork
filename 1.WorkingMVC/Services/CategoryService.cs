@@ -12,73 +12,73 @@ namespace _1.WorkingMVC.Services
 			return mapper.Map<List<CategoryItemModel>>(listTest);
 		}
 
-		public async Task<CategoryEditModel?> GetForEditAsync(int id)
-		{
-			var entity = await categoryRepository.GetByIdAsync(id);
-			return entity == null ? null : mapper.Map<CategoryEditModel>(entity);
-		}
+		//public async Task<CategoryEditModel?> GetForEditAsync(int id)
+		//{
+		//	var entity = await categoryRepository.GetByIdAsync(id);
+		//	return entity == null ? null : mapper.Map<CategoryEditModel>(entity);
+		//}
 
-		// Fix for CS0535: Implementing the missing method 'GetEditAsync' from ICategoryService
-		public async Task<CategoryEditModel?> GetEditAsync(int id)
-		{
-			return await GetForEditAsync(id);
-		}
+		//// Fix for CS0535: Implementing the missing method 'GetEditAsync' from ICategoryService
+		//public async Task<CategoryEditModel?> GetEditAsync(int id)
+		//{
+		//	return await GetForEditAsync(id);
+		//}
 
-		public async Task CreateAsync(CategoryCreateModel model)
-		{
-			var name = model.Name.Trim();
-			var existing = await categoryRepository.FindByNameAsync(name);
-			if (existing != null)
-			{
-				throw new InvalidOperationException($"Категорія з назвою '{name}' вже існує.");
-			}
+		//public async Task CreateAsync(CategoryCreateModel model)
+		//{
+		//	var name = model.Name.Trim();
+		//	var existing = await categoryRepository.FindByNameAsync(name);
+		//	if (existing != null)
+		//	{
+		//		throw new InvalidOperationException($"Категорія з назвою '{name}' вже існує.");
+		//	}
 
-			var entity = mapper.Map<CategoryEntity>(model);
-			if (model.Image != null)
-			{
-				entity.Image = await imageService.UploadImageAsync(model.Image);
-			}
+		//	var entity = mapper.Map<CategoryEntity>(model);
+		//	if (model.Image != null)
+		//	{
+		//		entity.Image = await imageService.UploadImageAsync(model.Image);
+		//	}
 
-			await categoryRepository.AddAsync(entity);
-			await categoryRepository.SaveChangesAsync();
-		}
+		//	await categoryRepository.AddAsync(entity);
+		//	await categoryRepository.SaveChangesAsync();
+		//}
 
-		public async Task UpdateAsync(CategoryEditModel model)
-		{
-			var name = model.Name.Trim();
-			var repeat = await categoryRepository.FindByNameAsync(name, model.Id);
-			if (repeat != null)
-			{
-				throw new InvalidOperationException($"Категорія з назвою '{name}' вже існує.");
-			}
+		//public async Task UpdateAsync(CategoryEditModel model)
+		//{
+		//	var name = model.Name.Trim();
+		//	var repeat = await categoryRepository.FindByNameAsync(name, model.Id);
+		//	if (repeat != null)
+		//	{
+		//		throw new InvalidOperationException($"Категорія з назвою '{name}' вже існує.");
+		//	}
 
-			var entity = await categoryRepository.GetByIdAsync(model.Id);
-			if (entity == null)
-			{
-				throw new KeyNotFoundException("Категорію не знайдено.");
-			}
+		//	var entity = await categoryRepository.GetByIdAsync(model.Id);
+		//	if (entity == null)
+		//	{
+		//		throw new KeyNotFoundException("Категорію не знайдено.");
+		//	}
 
-			entity.Name = name;
-			if (model.NewImage != null)
-			{
-				entity.Image = await imageService.UploadImageAsync(model.NewImage);
-			}
+		//	entity.Name = name;
+		//	if (model.NewImage != null)
+		//	{
+		//		entity.Image = await imageService.UploadImageAsync(model.NewImage);
+		//	}
 
-			await categoryRepository.UpdateAsync(entity);
-			await categoryRepository.SaveChangesAsync();
-		}
+		//	await categoryRepository.UpdateAsync(entity);
+		//	await categoryRepository.SaveChangesAsync();
+		//}
 
-		public async Task DeleteAsync(int id)
-		{
-			var entity = await categoryRepository.GetByIdAsync(id);
-			if (entity == null)
-			{
-				throw new KeyNotFoundException("Категорію не знайдено.");
-			}
+		//public async Task DeleteAsync(int id)
+		//{
+		//	var entity = await categoryRepository.GetByIdAsync(id);
+		//	if (entity == null)
+		//	{
+		//		throw new KeyNotFoundException("Категорію не знайдено.");
+		//	}
 
-			entity.IsDeleted = true;
-			await categoryRepository.UpdateAsync(entity);
-			await categoryRepository.SaveChangesAsync();
-		}
+		//	entity.IsDeleted = true;
+		//	await categoryRepository.UpdateAsync(entity);
+		//	await categoryRepository.SaveChangesAsync();
+		//}
 	}
 }

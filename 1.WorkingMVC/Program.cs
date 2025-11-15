@@ -39,6 +39,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ICategoryRepository ,CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUserService, UserService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -53,6 +54,10 @@ app.UseAuthentication();
 app.UseAuthorization(); // Встановлює чи має користувач доступ до сторінки
 
 app.MapStaticAssets();
+app.MapAreaControllerRoute(
+	name: "MyAreaPigAdmin",
+	areaName: "Admin",
+	pattern: "admin/{controller=Dashboards}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
