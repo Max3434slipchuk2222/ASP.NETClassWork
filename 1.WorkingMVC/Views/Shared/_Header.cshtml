@@ -35,6 +35,17 @@
                             </a>
                         </li>
                     }
+                    @if (User.IsInRole($"{Roles.Admin}" ))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-action="Index"
+                               asp-area="Admin"
+                               asp-controller="Main">
+                                Category
+                            </a>
+                        </li>
+                    }
                     <li class="nav-item"> <a class="nav-link" href="#">Link</a> </li>
                     <li class="nav-item"> <a class="nav-link disabled" aria-disabled="true">Disabled</a> </li>
                 </ul>

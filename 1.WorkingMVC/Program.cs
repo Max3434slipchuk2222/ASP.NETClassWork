@@ -39,6 +39,9 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ICategoryRepository ,CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<_1.WorkingMVC.Areas.Admin.Interfaces.ICategoryService, _1.WorkingMVC.Areas.Admin.Services.CategoryService>();
+builder.Services.AddScoped<_1.WorkingMVC.Areas.Admin.Interfaces.IImageService, _1.WorkingMVC.Areas.Admin.Services.ImageService>();
+builder.Services.AddScoped<_1.WorkingMVC.Areas.Admin.Interfaces.ICategoryRepository, _1.WorkingMVC.Areas.Admin.Repositories.CategoryRepository>();
 
 var app = builder.Build();
 
