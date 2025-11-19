@@ -14,6 +14,12 @@ public class MyAppDbContext : IdentityDbContext<UserEntity, RoleEntity,
 	{ }
 	// DbSet - відповідає за таблиці. Це створення таблиці
 	public DbSet<CategoryEntity> Categories { get; set; }
+	public DbSet<ProductEntity> Products { get; set; }
+	public DbSet<ProductImageEntity> ProductImages { get; set; }
+	public DbSet<CartEntity> Carts { get; set; }
+	public DbSet<OrderStatusEntity> OrderStatuses { get; set; }
+	public DbSet<OrderEntity> Orders { get; set; }
+	public DbSet<OrderItemEntity> OrderItems { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
@@ -28,6 +34,8 @@ public class MyAppDbContext : IdentityDbContext<UserEntity, RoleEntity,
 			.HasOne(ur => ur.Role)
 			.WithMany(u => u.UserRoles)
 			.HasForeignKey(ur => ur.RoleId);
+		builder.Entity<CartEntity>()
+			.HasKey(c => new { c.UserId, c.ProductId });
 
 	}
 }

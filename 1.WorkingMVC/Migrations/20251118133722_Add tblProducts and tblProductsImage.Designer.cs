@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using _1.WorkingMVC.Data;
@@ -11,9 +12,11 @@ using _1.WorkingMVC.Data;
 namespace _1.WorkingMVC.Migrations
 {
     [DbContext(typeof(MyAppDbContext))]
-    partial class MyAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251118133722_Add tblProducts and tblProductsImage")]
+    partial class AddtblProductsandtblProductsImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,24 +111,6 @@ namespace _1.WorkingMVC.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("_1.WorkingMVC.Data.Entities.CartEntity", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.HasKey("UserId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("tblCarts");
                 });
 
             modelBuilder.Entity("_1.WorkingMVC.Data.Entities.CategoryEntity", b =>
@@ -277,94 +262,6 @@ namespace _1.WorkingMVC.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("_1.WorkingMVC.Data.Entities.OrderEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("OrderStatusId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderStatusId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("tblOrders");
-                });
-
-            modelBuilder.Entity("_1.WorkingMVC.Data.Entities.OrderItemEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Count")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("PriceBuy")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("tblOrderItems");
-                });
-
-            modelBuilder.Entity("_1.WorkingMVC.Data.Entities.OrderStatusEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("tblOrderStatuses");
-                });
-
             modelBuilder.Entity("_1.WorkingMVC.Data.Entities.ProductEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -469,25 +366,6 @@ namespace _1.WorkingMVC.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("_1.WorkingMVC.Data.Entities.CartEntity", b =>
-                {
-                    b.HasOne("_1.WorkingMVC.Data.Entities.ProductEntity", "Product")
-                        .WithMany("Carts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("_1.WorkingMVC.Data.Entities.Identity.UserEntity", "User")
-                        .WithMany("Carts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("_1.WorkingMVC.Data.Entities.Identity.UserRoleEntity", b =>
                 {
                     b.HasOne("_1.WorkingMVC.Data.Entities.Identity.RoleEntity", "Role")
@@ -505,42 +383,6 @@ namespace _1.WorkingMVC.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("_1.WorkingMVC.Data.Entities.OrderEntity", b =>
-                {
-                    b.HasOne("_1.WorkingMVC.Data.Entities.OrderStatusEntity", "OrderStatus")
-                        .WithMany("Orders")
-                        .HasForeignKey("OrderStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("_1.WorkingMVC.Data.Entities.Identity.UserEntity", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("OrderStatus");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("_1.WorkingMVC.Data.Entities.OrderItemEntity", b =>
-                {
-                    b.HasOne("_1.WorkingMVC.Data.Entities.OrderEntity", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("_1.WorkingMVC.Data.Entities.ProductEntity", "Product")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("_1.WorkingMVC.Data.Entities.ProductEntity", b =>
@@ -577,29 +419,11 @@ namespace _1.WorkingMVC.Migrations
 
             modelBuilder.Entity("_1.WorkingMVC.Data.Entities.Identity.UserEntity", b =>
                 {
-                    b.Navigation("Carts");
-
-                    b.Navigation("Orders");
-
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("_1.WorkingMVC.Data.Entities.OrderEntity", b =>
-                {
-                    b.Navigation("OrderItems");
-                });
-
-            modelBuilder.Entity("_1.WorkingMVC.Data.Entities.OrderStatusEntity", b =>
-                {
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("_1.WorkingMVC.Data.Entities.ProductEntity", b =>
                 {
-                    b.Navigation("Carts");
-
-                    b.Navigation("OrderItems");
-
                     b.Navigation("ProductImages");
                 });
 #pragma warning restore 612, 618
